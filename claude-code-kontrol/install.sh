@@ -57,7 +57,13 @@ while IFS= read -r source; do
     "$SETTINGS")
 
   echo "$UPDATED" > "$SETTINGS"
-  echo "    ✓ installed"
+  echo "    ✓ hooks registered"
+
+  # Run interactive installer if present
+  PLUGIN_INSTALLER="$PLUGIN_DIR/install/run.sh"
+  if [ -f "$PLUGIN_INSTALLER" ]; then
+    bash "$PLUGIN_INSTALLER"
+  fi
 done < <(jq -r '.plugins[].source' "$MARKETPLACE")
 
 echo ""
