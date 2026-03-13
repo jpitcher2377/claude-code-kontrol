@@ -1,0 +1,10 @@
+{
+  "name": "claude-code-kontrol",
+  "version": "0.1.0",
+  "description": "A collection of Claude Code plugins for controlling development workflows.",
+  "author": {
+    "name": "jpitcher"
+  },
+  "keywords": ["macos", "mamp", "mysql", "php", "development"],
+  "hooks": "./plugins/system/localhost/hooks/hooks.json"
+}

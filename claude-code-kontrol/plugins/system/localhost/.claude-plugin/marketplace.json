@@ -1,0 +1,13 @@
+{
+  "name": "local",
+  "owner": {
+    "name": "jpitcher"
+  },
+  "plugins": [
+    {
+      "name": "localhost",
+      "source": "./",
+      "description": "Describes this Mac to Claude Code at session start."
+    }
+  ]
+}

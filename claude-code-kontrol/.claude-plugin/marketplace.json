@@ -1,0 +1,13 @@
+{
+  "name": "claude-code-kontrol",
+  "owner": {
+    "name": "jpitcher"
+  },
+  "plugins": [
+    {
+      "name": "localhost",
+      "source": "./plugins/system/localhost",
+      "description": "Describes this System to Claude Code at session start."
+    }
+  ]
+}

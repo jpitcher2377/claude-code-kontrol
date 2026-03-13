@@ -1,0 +1,9 @@
+{
+  "name": "localhost",
+  "version": "1.0.0",
+  "description": "Describes my local architecture to Claude so it does not have to search or use bad information.",
+  "author": {
+    "name": "Jonathan Pitcher"
+  },
+  "hooks": "./hooks/hooks.json"
+}
