@@ -32,6 +32,16 @@ EOF
 )
 fi
 
+if [ -n "${PHP_VERSION:-}" ]; then
+  CONTEXT+=$(cat <<EOF
+
+
+### PHP
+- Version: ${PHP_VERSION}${PHP_BINARY:+ | binary: $PHP_BINARY}${PHP_INI:+ | ini: $PHP_INI}
+EOF
+)
+fi
+
 jq -n --arg ctx "$CONTEXT" '{
   "hookSpecificOutput": {
     "hookEventName": "SessionStart",
