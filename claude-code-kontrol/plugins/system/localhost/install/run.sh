@@ -66,13 +66,17 @@ for probe_file in "$INSTALL_DIR/probes"/[0-9]*.sh; do
   # shellcheck source=/dev/null
   source "$probe_file"
 
-  if probe_is_configured "${PROBE_KEYS[@]}"; then
+  if [ "${PROBE_AUTO:-false}" = "true" ]; then
+    printf "  %-20s auto-detecting...\n" "$PROBE_NAME"
+  elif probe_is_configured "${PROBE_KEYS[@]}"; then
     printf "  %-20s already configured. Update? [y/N]: " "$PROBE_NAME"
     read -r ans
     [[ "$ans" =~ ^[Yy]$ ]] || continue
+    echo "  --- $PROBE_NAME ---"
+  else
+    echo "  --- $PROBE_NAME ---"
   fi
 
-  echo "  --- $PROBE_NAME ---"
   probe_run
   echo ""
 done

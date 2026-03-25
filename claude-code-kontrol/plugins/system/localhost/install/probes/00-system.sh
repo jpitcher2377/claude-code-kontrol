@@ -1,8 +1,8 @@
 PROBE_NAME="System"
-PROBE_KEYS=(SYS_OS SYS_VERSION SYS_ARCH SYS_CPU SYS_RAM_GB)
+PROBE_KEYS=()
+PROBE_AUTO=true
 
 probe_run() {
-  # Auto-detect cross-platform defaults
   local _os _ver _arch _cpu _ram
 
   if command -v sw_vers &>/dev/null; then
@@ -27,9 +27,9 @@ probe_run() {
     _ram=""
   fi
 
-  ask SYS_OS      "Operating system"  "$_os"
-  ask SYS_VERSION "OS version"        "$_ver"
-  ask SYS_ARCH    "Architecture"      "$_arch"
-  ask SYS_CPU     "CPU"               "$_cpu"
-  ask SYS_RAM_GB  "RAM (GB)"          "$_ram"
+  config_set SYS_OS      "$_os"
+  config_set SYS_VERSION "$_ver"
+  config_set SYS_ARCH    "$_arch"
+  config_set SYS_CPU     "$_cpu"
+  config_set SYS_RAM_GB  "$_ram"
 }
