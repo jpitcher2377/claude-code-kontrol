@@ -2,7 +2,7 @@
 
 **Kontrol Your AI.**
 
-CCK is an opinionated plugin architecture for Claude Code — built to 
+CCK is a plugin architecture for Claude Code — built to
 make AI-assisted development work *your* way, consistently, every session.
 
 ## The Problem
@@ -39,6 +39,24 @@ How you want Claude to approach problems — step by step, your way.
 
 ### 🔌 More Coming
 CCK is designed to grow. New plugins as new workflows emerge.
+
+## Translations
+
+CCK supports multiple languages. All user-facing strings live in `claude-code-kontrol/lang/`.
+
+**To use a different language**, set `CCK_LANG` before running the installer:
+
+```bash
+CCK_LANG=fr bash install.sh
+```
+
+**To add a translation:**
+
+1. Copy `lang/en.sh` to `lang/<code>.sh` (e.g. `lang/fr.sh`)
+2. Translate the values — do not change the variable names
+3. Submit a pull request
+
+The fallback is always `en.sh`, so partial translations are safe.
 
 ## Make It Yours
 
