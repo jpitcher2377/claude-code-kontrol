@@ -16,9 +16,10 @@ CCK fixes that.
 
 ## What CCK Does
 
-CCK loads your development opinions into Claude Code at launch — your 
-coding standards, your database conventions, your debug workflow, your 
-environment. Claude works the way you work, from the first prompt.
+At session start, CCK injects your local system configuration into Claude Code —
+your OS, PHP version, MySQL connection details, and more. Claude has that context
+before it ever searches your system, so it can make informed decisions from the
+first prompt without guessing or asking.
 
 ## Plugin Categories
 
