@@ -6,6 +6,13 @@ INSTALL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_DIR="$HOME/.cck"
 CONFIG="$CONFIG_DIR/localhost.conf"
 
+# --- Load language ---
+_cck_root="$(cd "$INSTALL_DIR/../../../.." && pwd)"
+_lang_file="$_cck_root/lang/${CCK_LANG:-en}.sh"
+[ -f "$_lang_file" ] || _lang_file="$_cck_root/lang/en.sh"
+# shellcheck source=/dev/null
+source "$_lang_file"
+
 mkdir -p "$CONFIG_DIR"
 [ -f "$CONFIG" ] || touch "$CONFIG"
 
@@ -53,7 +60,7 @@ probe_is_configured() {
 # --- Run probes ---
 
 echo ""
-echo "Claude Code Kontrol — localhost setup"
+echo "$MSG_SETUP_TITLE"
 echo ""
 
 for probe_file in "$INSTALL_DIR/probes"/[0-9]*.sh; do
@@ -68,9 +75,9 @@ for probe_file in "$INSTALL_DIR/probes"/[0-9]*.sh; do
   source "$probe_file"
 
   if [ "${PROBE_AUTO:-false}" = "true" ]; then
-    printf "  %-20s auto-detecting...\n" "$PROBE_NAME"
+    printf "  %-20s %s\n" "$PROBE_NAME" "$MSG_AUTO_DETECTING"
   elif probe_is_configured "${PROBE_KEYS[@]}"; then
-    printf "  %-20s already configured. Update? [y/N]: " "$PROBE_NAME"
+    printf "  %-20s %s" "$PROBE_NAME" "$MSG_ALREADY_CONFIGURED"
     read -r ans
     [[ "$ans" =~ ^[Yy]$ ]] || continue
     echo "  --- $PROBE_NAME ---"
@@ -82,4 +89,4 @@ for probe_file in "$INSTALL_DIR/probes"/[0-9]*.sh; do
   echo ""
 done
 
-echo "Saved to $CONFIG"
+echo "$MSG_SAVED_TO $CONFIG"

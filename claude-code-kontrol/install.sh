@@ -6,13 +6,19 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SETTINGS="$HOME/.claude/settings.json"
 MARKETPLACE="$REPO_DIR/.claude-plugin/marketplace.json"
 
+# --- Load language ---
+_lang_file="$REPO_DIR/lang/${CCK_LANG:-en}.sh"
+[ -f "$_lang_file" ] || _lang_file="$REPO_DIR/lang/en.sh"
+# shellcheck source=/dev/null
+source "$_lang_file"
+
 # --- Dependency check ---
 if ! command -v jq &>/dev/null; then
-  echo "Error: jq is required. Install with: brew install jq"
+  echo "$MSG_ERR_JQ"
   exit 1
 fi
 
-echo "Claude Code Kontrol — installing plugins..."
+echo "$MSG_INSTALL_TITLE"
 echo ""
 
 # --- Ensure settings.json exists ---
@@ -57,7 +63,7 @@ while IFS= read -r source; do
     "$SETTINGS")
 
   echo "$UPDATED" > "$SETTINGS"
-  echo "    ✓ hooks registered"
+  echo "    $MSG_HOOKS_REGISTERED"
 
   # Run interactive installer if present
   PLUGIN_INSTALLER="$PLUGIN_DIR/install/run.sh"
@@ -67,4 +73,4 @@ while IFS= read -r source; do
 done < <(jq -r '.plugins[].source' "$MARKETPLACE")
 
 echo ""
-echo "Done. Restart Claude Code to apply changes."
+echo "$MSG_INSTALL_DONE"
