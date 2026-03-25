@@ -21,25 +21,12 @@ your OS, PHP version, MySQL connection details, and more. Claude has that contex
 before it ever searches your system, so it can make informed decisions from the
 first prompt without guessing or asking.
 
-## Plugin Categories
+## Plugins
 
-### 🖥️ Environment
-Local system context — PHP versions, MySQL, Apache virtual hosts, 
-active ports. Claude knows your stack before you say a word.
-
-### 🗄️ Database
-How you want schemas designed, migrations written, and MySQL 
-connections handled. Your conventions, enforced consistently.
-
-### ⚙️ Code Standards  
-How functions are named, structured, and documented. Your opinionated 
-approach to clean, maintainable code.
-
-### 🐛 Debug Workflow
-How you want Claude to approach problems — step by step, your way.
-
-### 🔌 More Coming
-CCK is designed to grow. New plugins as new workflows emerge.
+### 🖥️ system/localhost *(active)*
+Detects and stores your local environment — OS, PHP version and binary,
+MySQL host, port, user, and socket. Injected into every Claude Code session
+at startup via a `SessionStart` hook.
 
 ## Translations
 
