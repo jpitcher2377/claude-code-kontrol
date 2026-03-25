@@ -22,6 +22,16 @@ CONTEXT=$(cat <<EOF
 EOF
 )
 
+if [ -n "${DB_HOST:-}" ]; then
+  CONTEXT+=$(cat <<EOF
+
+
+### Database
+- MySQL: ${DB_HOST}:${DB_PORT:-3306} (user: ${DB_USER:-root})${DB_SOCKET:+ | socket: $DB_SOCKET}
+EOF
+)
+fi
+
 jq -n --arg ctx "$CONTEXT" '{
   "hookSpecificOutput": {
     "hookEventName": "SessionStart",
