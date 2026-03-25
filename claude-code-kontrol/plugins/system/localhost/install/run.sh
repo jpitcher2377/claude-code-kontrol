@@ -61,6 +61,7 @@ for probe_file in "$INSTALL_DIR/probes"/[0-9]*.sh; do
 
   PROBE_NAME=""
   PROBE_KEYS=()
+  PROBE_AUTO=false
   probe_run() { :; }
 
   # shellcheck source=/dev/null
