@@ -62,7 +62,7 @@ while IFS= read -r source; do
   # Run interactive installer if present
   PLUGIN_INSTALLER="$PLUGIN_DIR/install/run.sh"
   if [ -f "$PLUGIN_INSTALLER" ]; then
-    bash "$PLUGIN_INSTALLER"
+    bash "$PLUGIN_INSTALLER" </dev/tty
   fi
 done < <(jq -r '.plugins[].source' "$MARKETPLACE")
 
