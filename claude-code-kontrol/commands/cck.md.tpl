@@ -54,7 +54,13 @@ If no specific action was requested above, display this menu and ask the user to
 
   Use the actual values from `~/.cck/localhost.conf`. Show `(empty)` for blank values. Align values with consistent spacing. System fields have no numbers — they are display-only.
 
-  - If the user enters **[1]**: tell them to run `bash ${CCK_PLUGIN_DIR}/install/run.sh` to re-detect system values (requires interactive TTY). Then redisplay the settings screen.
+  - If the user enters **[1]**: refresh system info inline using Bash commands — do NOT tell the user to run any command. Run these and update `~/.cck/localhost.conf` with the results:
+    - `sw_vers -productVersion` → SYS_VERSION
+    - `uname -m` → SYS_ARCH
+    - `sysctl -n machdep.cpu.brand_string` → SYS_CPU
+    - `echo $(($(sysctl -n hw.memsize) / 1073741824))` → SYS_RAM_GB
+    - SYS_OS is always "macOS"
+    Update each key using: `sed -i.bak "s|^KEY=.*|KEY=\"newvalue\"|" ~/.cck/localhost.conf && rm ~/.cck/localhost.conf.bak`. Then redisplay the settings screen.
   - If the user enters **2–9**: show the key name and current value, prompt for the new value, then update `~/.cck/localhost.conf` using: `sed -i.bak "s|^KEY=.*|KEY=\"newvalue\"|" ~/.cck/localhost.conf && rm ~/.cck/localhost.conf.bak`. After saving, redisplay the full settings screen.
 
 - **Re-run setup (2):** Tell the user to run this in their terminal: `bash ${CCK_PLUGIN_DIR}/install/run.sh` (it requires interactive TTY input so it can't run inside Claude Code directly).
