@@ -13,16 +13,18 @@ $ARGUMENTS
 
 If no specific action was requested above, display this menu and ask the user to pick an option by number:
 
----
-## CCK — Claude Code Kontrol
-
-1. **View settings** — show all current values, formatted and explained
-2. **Edit MySQL** — update DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_SOCKET
-3. **Edit PHP** — update PHP_VERSION, PHP_BINARY, PHP_INI
-4. **Edit System** — update SYS_OS, SYS_VERSION, SYS_ARCH, SYS_CPU, SYS_RAM_GB
-5. **Re-run setup** — run the interactive setup wizard (re-detect everything)
-6. **View hooks** — show registered Claude Code hooks from ~/.claude/settings.json
----
+```
+════════════════════════════════════════════════════════════
+                  CCK — Claude Code Kontrol
+════════════════════════════════════════════════════════════
+  1. View settings  — show all current values, explained
+  2. Edit MySQL     — DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_SOCKET
+  3. Edit PHP       — PHP_VERSION, PHP_BINARY, PHP_INI
+  4. Edit System    — SYS_OS, SYS_VERSION, SYS_ARCH, SYS_CPU, SYS_RAM_GB
+  5. Re-run setup   — run the interactive setup wizard
+  6. View hooks     — hooks in ~/.claude/settings.json
+════════════════════════════════════════════════════════════
+```
 
 **Handling each option:**
 
