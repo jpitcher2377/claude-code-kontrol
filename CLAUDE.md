@@ -63,7 +63,7 @@ The canonical key list for `~/.cck/localhost.conf`. This is the source of truth 
 
 System keys (—) are display-only in `/cck:settings`; editable keys are numbered 2–9.
 
-After saving any DB field ([2]–[6]), a full DB connection test is run automatically using `mysqladmin ping` with the current values of all DB fields. Uses socket if `DB_SOCKET` is set, otherwise host:port. Result is shown before redisplaying the settings screen.
+Before saving any DB field ([2]–[6]), a full DB connection test is run using `mysqladmin ping` with the new value merged with current values of all other DB fields. Uses socket if `DB_SOCKET` is set, otherwise host:port. If the test fails, the user is prompted `Save anyway? [y/n]` before the value is written. Result is shown before redisplaying the settings screen.
 
 Validation behavior: warn and confirm if a value looks wrong, but allow user to save anyway (trust but verify, user has final say).
 

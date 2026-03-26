@@ -69,13 +69,11 @@ Then redisplay the settings screen.
 3. For any failed validation check, show a warning and ask `Save anyway? [y/n]`:
    - `y` → save
    - `n` → prompt to re-enter (go back to step 1)
-4. If all checks pass → save immediately.
+4. If all checks pass → proceed to save (DB fields run a connection test first; see below).
 
-Save fields with: `sed -i.bak "s|^KEY=.*|KEY=\"newvalue\"|" ~/.cck/localhost.conf && rm ~/.cck/localhost.conf.bak`
+**DB connection test — run before saving any of [2]–[6]:**
 
-**DB connection test — run after saving any of [2]–[6]:**
-
-After saving any DB field, test the full connection using the current values of all DB fields from `~/.cck/localhost.conf`. Use the socket if `DB_SOCKET` is set and non-empty, otherwise use host:port:
+Before saving any DB field, test the connection using the new value merged with the current values of the other DB fields from `~/.cck/localhost.conf`. Use the socket if `DB_SOCKET` is set and non-empty (using the new value if [6] is being edited), otherwise use host:port:
 
 ```bash
 # With socket:
@@ -88,12 +86,20 @@ mysqladmin -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -p"$DB_PASS" ping 2>&1
 If the test fails, show:
 ```
   ⚠  DB connection test failed: [error output from mysqladmin]
+     Save anyway? [y/n]
 ```
+- `y` → save
+- `n` → discard the change (keep the previous value) and redisplay the settings screen
+
 If the test passes, show:
 ```
   ✓  DB connection OK
 ```
+Then save the field with: `sed -i.bak "s|^KEY=.*|KEY=\"newvalue\"|" ~/.cck/localhost.conf && rm ~/.cck/localhost.conf.bak`
+
 Then redisplay the full settings screen.
+
+Save non-DB fields with: `sed -i.bak "s|^KEY=.*|KEY=\"newvalue\"|" ~/.cck/localhost.conf && rm ~/.cck/localhost.conf.bak`
 
 ### Validation Rules
 
