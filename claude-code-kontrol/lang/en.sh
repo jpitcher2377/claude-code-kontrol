@@ -9,6 +9,7 @@ MSG_HOOKS_REGISTERED="✓ hooks registered"
 MSG_INSTALL_DONE="Done. Restart Claude Code to apply changes."
 
 # run.sh
+MSG_COMMAND_INSTALLED="✓ command installed"
 MSG_SETUP_TITLE="Claude Code Kontrol — localhost setup"
 MSG_AUTO_DETECTING="auto-detecting..."
 MSG_ALREADY_CONFIGURED="already configured. Update? [y/N]: "

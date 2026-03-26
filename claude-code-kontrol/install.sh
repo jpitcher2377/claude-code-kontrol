@@ -65,6 +65,19 @@ while IFS= read -r source; do
   echo "$UPDATED" > "$SETTINGS"
   echo "    $MSG_HOOKS_REGISTERED"
 
+  # Install slash commands if present
+  PLUGIN_COMMANDS_DIR="$PLUGIN_DIR/commands"
+  if [ -d "$PLUGIN_COMMANDS_DIR" ]; then
+    CLAUDE_COMMANDS_DIR="$HOME/.claude/commands"
+    mkdir -p "$CLAUDE_COMMANDS_DIR"
+    for cmd_file in "$PLUGIN_COMMANDS_DIR"/*.md; do
+      [ -f "$cmd_file" ] || continue
+      cmd_name="$(basename "$cmd_file")"
+      sed "s|\${CCK_PLUGIN_DIR}|$PLUGIN_DIR|g" "$cmd_file" > "$CLAUDE_COMMANDS_DIR/$cmd_name"
+      echo "    $MSG_COMMAND_INSTALLED /${cmd_name%.md}"
+    done
+  fi
+
   # Run interactive installer if present
   PLUGIN_INSTALLER="$PLUGIN_DIR/install/run.sh"
   if [ -f "$PLUGIN_INSTALLER" ]; then
