@@ -19,23 +19,43 @@ If no specific action was requested above, display this menu and ask the user to
 ════════════════════════════════════════════════════════════
                   ${MSG_CCK_TITLE}
 ════════════════════════════════════════════════════════════
-  1. ${MSG_MENU_VIEW}
-  2. ${MSG_MENU_MYSQL}
-  3. ${MSG_MENU_PHP}
-  4. ${MSG_MENU_SYSTEM}
-  5. ${MSG_MENU_SETUP}
-  6. ${MSG_MENU_HOOKS}
+  1. ${MSG_MENU_SETTINGS}
+  2. ${MSG_MENU_SETUP}
+  3. ${MSG_MENU_HOOKS}
 ════════════════════════════════════════════════════════════
 ```
 
 **Handling each option:**
 
-- **View (1):** Read `~/.cck/localhost.conf`, display each key/value in a clean formatted table grouped by section (System, Database, PHP). Explain what each value is used for.
+- **Settings (1):** Read `~/.cck/localhost.conf` and display all keys numbered sequentially, grouped by section, in this exact format (do not use a markdown table):
 
-- **Edit MySQL/PHP/System (2/3/4):** For each key in the section, show the current value and ask if the user wants to change it. If yes, prompt for the new value, then update `~/.cck/localhost.conf` using the Bash tool with sed: `sed -i.bak "s|^KEY=.*|KEY=\"newvalue\"|" ~/.cck/localhost.conf && rm ~/.cck/localhost.conf.bak`. If the key doesn't exist yet, append it: `echo 'KEY="value"' >> ~/.cck/localhost.conf`.
+```
+── System ───────────────────────────────────────────────
+  [1] SYS_OS         macOS
+  [2] SYS_VERSION    14.8.4
+  [3] SYS_ARCH       arm64
+  [4] SYS_CPU        Apple M2
+  [5] SYS_RAM_GB     8
 
-- **Re-run setup (5):** Tell the user to run this in their terminal: `bash ${CCK_PLUGIN_DIR}/install/run.sh` (it requires interactive TTY input so it can't run inside Claude Code directly).
+── Database ─────────────────────────────────────────────
+  [6] DB_HOST        localhost
+  [7] DB_PORT        8889
+  [8] DB_USER        root
+  [9] DB_PASS        (empty)
+ [10] DB_SOCKET      /Applications/MAMP/tmp/mysql/mysql.sock
 
-- **View hooks (6):** Read `~/.claude/settings.json` using the Read tool and display the hooks in a clean, readable format.
+── PHP ──────────────────────────────────────────────────
+ [11] PHP_VERSION    8.2.0
+ [12] PHP_BINARY     /Applications/MAMP/bin/php/php8.2.0/bin/php
+ [13] PHP_INI        /Applications/MAMP/bin/php/php8.2.0/conf/php.ini
+
+  Enter a number to edit, or [m] to return to menu.
+```
+
+  Use the actual values from `~/.cck/localhost.conf`. Show `(empty)` for blank values. Align values with consistent spacing. When the user enters a number, show the key name and current value, prompt for the new value, then update `~/.cck/localhost.conf` using: `sed -i.bak "s|^KEY=.*|KEY=\"newvalue\"|" ~/.cck/localhost.conf && rm ~/.cck/localhost.conf.bak`. After saving, redisplay the full settings screen.
+
+- **Re-run setup (2):** Tell the user to run this in their terminal: `bash ${CCK_PLUGIN_DIR}/install/run.sh` (it requires interactive TTY input so it can't run inside Claude Code directly).
+
+- **Hooks (3):** Read `~/.claude/settings.json` using the Read tool and display the hooks in a clean, readable format.
 
 After completing any option, ask if the user wants to do anything else or return to the menu.

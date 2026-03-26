@@ -39,9 +39,6 @@ MSG_PHP_INI="PHP ini path"
 
 # commands/cck.md
 MSG_CCK_TITLE="CCK — Claude Code Kontrol"
-MSG_MENU_VIEW="View settings  — show all current values, explained"
-MSG_MENU_MYSQL="Edit MySQL     — DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_SOCKET"
-MSG_MENU_PHP="Edit PHP       — PHP_VERSION, PHP_BINARY, PHP_INI"
-MSG_MENU_SYSTEM="Edit System    — SYS_OS, SYS_VERSION, SYS_ARCH, SYS_CPU, SYS_RAM_GB"
-MSG_MENU_SETUP="Re-run setup   — run the interactive setup wizard"
-MSG_MENU_HOOKS="View hooks     — hooks in ~/.claude/settings.json"
+MSG_MENU_SETTINGS="Settings    — view and edit all configuration values"
+MSG_MENU_SETUP="Re-run setup — run the interactive setup wizard"
+MSG_MENU_HOOKS="Hooks        — view hooks in ~/.claude/settings.json"
