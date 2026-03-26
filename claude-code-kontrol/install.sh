@@ -27,6 +27,19 @@ if [ ! -f "$SETTINGS" ]; then
   echo '{}' > "$SETTINGS"
 fi
 
+# --- Install global commands ---
+GLOBAL_COMMANDS_DIR="$REPO_DIR/commands"
+if [ -d "$GLOBAL_COMMANDS_DIR" ]; then
+  CLAUDE_COMMANDS_DIR="$HOME/.claude/commands"
+  mkdir -p "$CLAUDE_COMMANDS_DIR"
+  for cmd_file in "$GLOBAL_COMMANDS_DIR"/*.md; do
+    [ -f "$cmd_file" ] || continue
+    cmd_name="$(basename "$cmd_file")"
+    cp "$cmd_file" "$CLAUDE_COMMANDS_DIR/$cmd_name"
+    echo "  $MSG_COMMAND_INSTALLED /${cmd_name%.md}"
+  done
+fi
+
 # --- Install each plugin ---
 while IFS= read -r source; do
   PLUGIN_DIR="$REPO_DIR/${source#./}"
