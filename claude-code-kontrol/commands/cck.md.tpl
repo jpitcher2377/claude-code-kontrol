@@ -30,7 +30,7 @@ If no specific action was requested above, display this menu and ask the user to
 - **Settings (1):** Read `~/.cck/localhost.conf` and display all keys numbered sequentially, grouped by section, in this exact format (do not use a markdown table):
 
 ```
-── System ───────────────────────────────────────────────
+── System (read-only) ───────────────────────────────────
   [1] SYS_OS         macOS
   [2] SYS_VERSION    14.8.4
   [3] SYS_ARCH       arm64
@@ -49,10 +49,14 @@ If no specific action was requested above, display this menu and ask the user to
  [12] PHP_BINARY     /Applications/MAMP/bin/php/php8.2.0/bin/php
  [13] PHP_INI        /Applications/MAMP/bin/php/php8.2.0/conf/php.ini
 
-  Enter a number to edit, or [m] to return to menu.
+  Enter a number to edit (6–13), [r] to refresh system info, or [m] to return to menu.
 ```
 
-  Use the actual values from `~/.cck/localhost.conf`. Show `(empty)` for blank values. Align values with consistent spacing. When the user enters a number, show the key name and current value, prompt for the new value, then update `~/.cck/localhost.conf` using: `sed -i.bak "s|^KEY=.*|KEY=\"newvalue\"|" ~/.cck/localhost.conf && rm ~/.cck/localhost.conf.bak`. After saving, redisplay the full settings screen.
+  Use the actual values from `~/.cck/localhost.conf`. Show `(empty)` for blank values. Align values with consistent spacing.
+
+  - If the user enters **1–5**: tell them "System values are auto-detected and read-only. Use [r] to refresh them."
+  - If the user enters **6–13**: show the key name and current value, prompt for the new value, then update `~/.cck/localhost.conf` using: `sed -i.bak "s|^KEY=.*|KEY=\"newvalue\"|" ~/.cck/localhost.conf && rm ~/.cck/localhost.conf.bak`. After saving, redisplay the full settings screen.
+  - If the user enters **[r]**: tell them to run `bash ${CCK_PLUGIN_DIR}/install/run.sh` to re-detect system values (requires interactive TTY). Then redisplay the settings screen.
 
 - **Re-run setup (2):** Tell the user to run this in their terminal: `bash ${CCK_PLUGIN_DIR}/install/run.sh` (it requires interactive TTY input so it can't run inside Claude Code directly).
 
