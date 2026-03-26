@@ -13,6 +13,8 @@ $ARGUMENTS
 
 If no specific action was requested above, display this menu and ask the user to pick an option by number:
 
+> **Note:** Output the menu block exactly as written below — do not reformat it as markdown. Also, use only built-in Claude Code tools (Read, Edit, Write, Glob, Grep, Bash) — do not use python, jq, or any external tool that may not be available in all environments.
+
 ```
 ════════════════════════════════════════════════════════════
                   CCK — Claude Code Kontrol
