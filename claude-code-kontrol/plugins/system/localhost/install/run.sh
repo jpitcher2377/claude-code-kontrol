@@ -19,7 +19,7 @@ mkdir -p "$CONFIG_DIR"
 # --- Helpers ---
 
 config_get() {
-  grep "^${1}=" "$CONFIG" 2>/dev/null | cut -d= -f2- || true
+  grep "^${1}=" "$CONFIG" 2>/dev/null | cut -d= -f2- | sed 's/^"\(.*\)"$/\1/' || true
 }
 
 config_set() {
