@@ -17,14 +17,14 @@ If no specific action was requested above, display this menu and ask the user to
 
 ```
 ════════════════════════════════════════════════════════════
-                  CCK — Claude Code Kontrol
+                  ${MSG_CCK_TITLE}
 ════════════════════════════════════════════════════════════
-  1. View settings  — show all current values, explained
-  2. Edit MySQL     — DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_SOCKET
-  3. Edit PHP       — PHP_VERSION, PHP_BINARY, PHP_INI
-  4. Edit System    — SYS_OS, SYS_VERSION, SYS_ARCH, SYS_CPU, SYS_RAM_GB
-  5. Re-run setup   — run the interactive setup wizard
-  6. View hooks     — hooks in ~/.claude/settings.json
+  1. ${MSG_MENU_VIEW}
+  2. ${MSG_MENU_MYSQL}
+  3. ${MSG_MENU_PHP}
+  4. ${MSG_MENU_SYSTEM}
+  5. ${MSG_MENU_SETUP}
+  6. ${MSG_MENU_HOOKS}
 ════════════════════════════════════════════════════════════
 ```
 

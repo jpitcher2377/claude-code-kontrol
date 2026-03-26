@@ -11,6 +11,11 @@ _lang_file="$REPO_DIR/lang/${CCK_LANG:-en}.sh"
 [ -f "$_lang_file" ] || _lang_file="$REPO_DIR/lang/en.sh"
 # shellcheck source=/dev/null
 source "$_lang_file"
+# Export MSG_* vars so envsubst can access them
+set -a
+# shellcheck source=/dev/null
+source "$_lang_file"
+set +a
 
 # --- Dependency check ---
 if ! command -v jq &>/dev/null; then
@@ -32,11 +37,18 @@ GLOBAL_COMMANDS_DIR="$REPO_DIR/commands"
 if [ -d "$GLOBAL_COMMANDS_DIR" ]; then
   CLAUDE_COMMANDS_DIR="$HOME/.claude/commands"
   mkdir -p "$CLAUDE_COMMANDS_DIR"
-  for cmd_file in "$GLOBAL_COMMANDS_DIR"/*.md; do
+  # Build envsubst variable list from MSG_* vars (leaves ${CCK_PLUGIN_DIR}, $ARGUMENTS untouched)
+  _msg_vars="$(printf '${%s} ' "${!MSG_@}")"
+  for cmd_file in "$GLOBAL_COMMANDS_DIR"/*.md.tpl "$GLOBAL_COMMANDS_DIR"/*.md; do
     [ -f "$cmd_file" ] || continue
     cmd_name="$(basename "$cmd_file")"
-    cp "$cmd_file" "$CLAUDE_COMMANDS_DIR/$cmd_name"
-    echo "  $MSG_COMMAND_INSTALLED /${cmd_name%.md}"
+    out_name="${cmd_name%.tpl}"   # strip .tpl if present
+    if [[ "$cmd_file" == *.tpl ]]; then
+      envsubst "$_msg_vars" < "$cmd_file" > "$CLAUDE_COMMANDS_DIR/$out_name"
+    else
+      cp "$cmd_file" "$CLAUDE_COMMANDS_DIR/$out_name"
+    fi
+    echo "  $MSG_COMMAND_INSTALLED /${out_name%.md}"
   done
 fi
 
