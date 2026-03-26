@@ -52,16 +52,15 @@ The canonical key list for `~/.cck/localhost.conf`. This is the source of truth 
 | — | `SYS_ARCH` | System | string | read-only, auto-detected |
 | — | `SYS_CPU` | System | string | read-only, auto-detected |
 | — | `SYS_RAM_GB` | System | integer | read-only, auto-detected |
-| 2 | `DB_HOST` | Database | string | valid hostname or IP |
-| 3 | `DB_PORT` | Database | integer | numeric, 1–65535 |
-| 4 | `DB_USER` | Database | string | non-empty |
-| 5 | `DB_PASS` | Database | string | any value (blank allowed) |
-| 6 | `DB_SOCKET` | Database | path | path must exist on disk if set |
-| 7 | `PHP_VERSION` | PHP | string | semver format (x.y.z) |
-| 8 | `PHP_BINARY` | PHP | path | path must exist on disk |
-| 9 | `PHP_INI` | PHP | path | path must exist on disk |
+| 2 | `DB_HOST` + `DB_PORT` | Database | string + integer | displayed/edited as combined `host:port`; host: valid hostname or IP; port: numeric 1–65535; connectivity tested via `nc -z -w2` |
+| 3 | `DB_USER` | Database | string | non-empty |
+| 4 | `DB_PASS` | Database | string | any value (blank allowed) |
+| 5 | `DB_SOCKET` | Database | path | path must exist on disk if set |
+| 6 | `PHP_VERSION` | PHP | string | semver format (x.y.z) |
+| 7 | `PHP_BINARY` | PHP | path | path must exist on disk |
+| 8 | `PHP_INI` | PHP | path | path must exist on disk |
 
-System keys (—) are display-only in `/cck:settings`; editable keys are numbered 2–9.
+System keys (—) are display-only in `/cck:settings`; editable keys are numbered 2–8. `DB_HOST` and `DB_PORT` are stored as separate keys but combined into a single field [2] in the UI.
 
 Validation behavior: warn and confirm if a value looks wrong, but allow user to save anyway (trust but verify, user has final say).
 
