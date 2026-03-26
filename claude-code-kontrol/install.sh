@@ -50,6 +50,24 @@ if [ -d "$GLOBAL_COMMANDS_DIR" ]; then
     fi
     echo "  $MSG_COMMAND_INSTALLED /${out_name%.md}"
   done
+
+  # Install subcommands (one level deep, e.g. commands/cck/settings.md.tpl → /cck/settings)
+  for sub_dir in "$GLOBAL_COMMANDS_DIR"/*/; do
+    [ -d "$sub_dir" ] || continue
+    sub_name="$(basename "$sub_dir")"
+    mkdir -p "$CLAUDE_COMMANDS_DIR/$sub_name"
+    for cmd_file in "$sub_dir"*.md.tpl "$sub_dir"*.md; do
+      [ -f "$cmd_file" ] || continue
+      cmd_name="$(basename "$cmd_file")"
+      out_name="${cmd_name%.tpl}"
+      if [[ "$cmd_file" == *.tpl ]]; then
+        envsubst "$_msg_vars" < "$cmd_file" > "$CLAUDE_COMMANDS_DIR/$sub_name/$out_name"
+      else
+        cp "$cmd_file" "$CLAUDE_COMMANDS_DIR/$sub_name/$out_name"
+      fi
+      echo "  $MSG_COMMAND_INSTALLED /${sub_name}/${out_name%.md}"
+    done
+  done
 fi
 
 # --- Install each plugin ---
