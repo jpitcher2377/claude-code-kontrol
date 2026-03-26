@@ -7,8 +7,6 @@ Use only built-in Claude Code tools (Read, Edit, Write, Glob, Grep, Bash) — do
 Before displaying the settings screen, read `~/.cck/localhost.conf` and check whether all editable keys are present. The canonical editable key list is:
 `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS`, `DB_SOCKET`, `PHP_VERSION`, `PHP_BINARY`, `PHP_INI`
 
-Note: `DB_HOST` and `DB_PORT` are stored as separate keys but displayed and edited as a combined `DB_HOST:PORT` field.
-
 For each missing key, prompt the user:
 ```
   ⚠  New setting detected: KEY_NAME is not in your config.
@@ -29,17 +27,18 @@ Display in this exact format (do not use a markdown table). Use the actual value
     SYS_RAM_GB     8
 
 ── Database ─────────────────────────────────────────────
-  [2] DB_HOST:PORT   localhost:8889
-  [3] DB_USER        root
-  [4] DB_PASS        (empty)
-  [5] DB_SOCKET      /Applications/MAMP/tmp/mysql/mysql.sock
+  [2] DB_HOST      localhost
+  [3] DB_PORT      8889
+  [4] DB_USER      root
+  [5] DB_PASS      (empty)
+  [6] DB_SOCKET    /Applications/MAMP/tmp/mysql/mysql.sock
 
 ── PHP ──────────────────────────────────────────────────
-  [6] PHP_VERSION    8.2.0
-  [7] PHP_BINARY     /Applications/MAMP/bin/php/php8.2.0/bin/php
-  [8] PHP_INI        /Applications/MAMP/bin/php/php8.2.0/conf/php.ini
+  [7] PHP_VERSION  8.2.0
+  [8] PHP_BINARY   /Applications/MAMP/bin/php/php8.2.0/bin/php
+  [9] PHP_INI      /Applications/MAMP/bin/php/php8.2.0/conf/php.ini
 
-  Enter a number to edit (2–8), [1] to refresh system info, or [m] for /cck menu.
+  Enter a number to edit (2–9), [1] to refresh system info, or [m] for /cck menu.
 ```
 
 ## Actions
@@ -59,11 +58,11 @@ Then redisplay the settings screen.
 
 ---
 
-**[2–8] — Edit a field**
+**[2–9] — Edit a field**
 
 1. Show the field name and current value prefilled in the prompt, e.g.:
    ```
-   DB_HOST:PORT [localhost:8889]: _
+   DB_HOST [localhost]: _
    ```
    User can edit or press Enter to keep the current value.
 2. Validate the new value using the rules below.
@@ -72,38 +71,46 @@ Then redisplay the settings screen.
    - `n` → prompt to re-enter (go back to step 1)
 4. If all checks pass → save immediately.
 
-**[2] DB_HOST:PORT — special handling:**
-- Prompt for the combined value as `host:port` (prefilled with current `DB_HOST:DB_PORT`)
-- Split on `:` to get host and port parts
-- Validate host: not empty; no spaces; only alphanumeric, dots, hyphens
-- Validate port: integer in range 1–65535
-- Validate connectivity: run `nc -z -w2 HOST PORT` via Bash; warn if it fails
-- Run all three checks before asking to save — show all warnings together if multiple fail
-- On save, write `DB_HOST` and `DB_PORT` as separate keys:
-  ```
-  sed -i.bak "s|^DB_HOST=.*|DB_HOST=\"host\"|" ~/.cck/localhost.conf && rm ~/.cck/localhost.conf.bak
-  sed -i.bak "s|^DB_PORT=.*|DB_PORT=\"port\"|" ~/.cck/localhost.conf && rm ~/.cck/localhost.conf.bak
-  ```
+Save fields with: `sed -i.bak "s|^KEY=.*|KEY=\"newvalue\"|" ~/.cck/localhost.conf && rm ~/.cck/localhost.conf.bak`
 
-Save all other fields with: `sed -i.bak "s|^KEY=.*|KEY=\"newvalue\"|" ~/.cck/localhost.conf && rm ~/.cck/localhost.conf.bak`
+**DB connection test — run after saving any of [2]–[6]:**
 
-After saving, redisplay the full settings screen.
+After saving any DB field, test the full connection using the current values of all DB fields from `~/.cck/localhost.conf`. Use the socket if `DB_SOCKET` is set and non-empty, otherwise use host:port:
+
+```bash
+# With socket:
+mysqladmin -S "$DB_SOCKET" -u "$DB_USER" -p"$DB_PASS" ping 2>&1
+
+# Without socket:
+mysqladmin -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -p"$DB_PASS" ping 2>&1
+```
+
+If the test fails, show:
+```
+  ⚠  DB connection test failed: [error output from mysqladmin]
+```
+If the test passes, show:
+```
+  ✓  DB connection OK
+```
+Then redisplay the full settings screen.
 
 ### Validation Rules
 
 | # | Key | Rule | Check |
 |---|---|---|---|
-| 2 | `DB_HOST:PORT` | Valid host, valid port, reachable | Host: not empty, no spaces, alphanumeric/dots/hyphens; Port: integer 1–65535; connectivity: `nc -z -w2 host port` |
-| 3 | `DB_USER` | Non-empty | Must not be blank |
-| 4 | `DB_PASS` | Any value | Always valid — no check needed |
-| 5 | `DB_SOCKET` | Path exists if set | If non-empty, run `test -e "value"` via Bash; warn if not found |
-| 6 | `PHP_VERSION` | Semver format | Must match x.y.z pattern |
-| 7 | `PHP_BINARY` | Path exists on disk | Run `test -e "value"` via Bash; warn if not found |
-| 8 | `PHP_INI` | Path exists on disk | Run `test -e "value"` via Bash; warn if not found |
+| 2 | `DB_HOST` | Valid hostname or IP | Not empty; no spaces; only alphanumeric, dots, hyphens |
+| 3 | `DB_PORT` | Valid port number | Integer in range 1–65535 |
+| 4 | `DB_USER` | Non-empty | Must not be blank |
+| 5 | `DB_PASS` | Any value | Always valid — no check needed |
+| 6 | `DB_SOCKET` | Path exists if set | If non-empty, run `test -e "value"` via Bash; warn if not found |
+| 7 | `PHP_VERSION` | Semver format | Must match x.y.z pattern |
+| 8 | `PHP_BINARY` | Path exists on disk | Run `test -e "value"` via Bash; warn if not found |
+| 9 | `PHP_INI` | Path exists on disk | Run `test -e "value"` via Bash; warn if not found |
 
 Warning format (show all applicable warnings together before asking to save):
 ```
-  ⚠  [reason 1 — e.g. "host:port is not reachable"]
+  ⚠  [reason 1]
   ⚠  [reason 2 — if multiple checks failed]
      Save anyway? [y/n]
 ```
