@@ -30,33 +30,32 @@ If no specific action was requested above, display this menu and ask the user to
 - **Settings (1):** Read `~/.cck/localhost.conf` and display all keys numbered sequentially, grouped by section, in this exact format (do not use a markdown table):
 
 ```
-── System (read-only) ───────────────────────────────────
-  [1] SYS_OS         macOS
-  [2] SYS_VERSION    14.8.4
-  [3] SYS_ARCH       arm64
-  [4] SYS_CPU        Apple M2
-  [5] SYS_RAM_GB     8
+── System (read-only, [1] to refresh) ───────────────────
+    SYS_OS         macOS
+    SYS_VERSION    14.8.4
+    SYS_ARCH       arm64
+    SYS_CPU        Apple M2
+    SYS_RAM_GB     8
 
 ── Database ─────────────────────────────────────────────
-  [6] DB_HOST        localhost
-  [7] DB_PORT        8889
-  [8] DB_USER        root
-  [9] DB_PASS        (empty)
- [10] DB_SOCKET      /Applications/MAMP/tmp/mysql/mysql.sock
+  [2] DB_HOST        localhost
+  [3] DB_PORT        8889
+  [4] DB_USER        root
+  [5] DB_PASS        (empty)
+  [6] DB_SOCKET      /Applications/MAMP/tmp/mysql/mysql.sock
 
 ── PHP ──────────────────────────────────────────────────
- [11] PHP_VERSION    8.2.0
- [12] PHP_BINARY     /Applications/MAMP/bin/php/php8.2.0/bin/php
- [13] PHP_INI        /Applications/MAMP/bin/php/php8.2.0/conf/php.ini
+  [7] PHP_VERSION    8.2.0
+  [8] PHP_BINARY     /Applications/MAMP/bin/php/php8.2.0/bin/php
+  [9] PHP_INI        /Applications/MAMP/bin/php/php8.2.0/conf/php.ini
 
-  Enter a number to edit (6–13), [r] to refresh system info, or [m] to return to menu.
+  Enter a number to edit (2–9), [1] to refresh system info, or [m] to return to menu.
 ```
 
-  Use the actual values from `~/.cck/localhost.conf`. Show `(empty)` for blank values. Align values with consistent spacing.
+  Use the actual values from `~/.cck/localhost.conf`. Show `(empty)` for blank values. Align values with consistent spacing. System fields have no numbers — they are display-only.
 
-  - If the user enters **1–5**: tell them "System values are auto-detected and read-only. Use [r] to refresh them."
-  - If the user enters **6–13**: show the key name and current value, prompt for the new value, then update `~/.cck/localhost.conf` using: `sed -i.bak "s|^KEY=.*|KEY=\"newvalue\"|" ~/.cck/localhost.conf && rm ~/.cck/localhost.conf.bak`. After saving, redisplay the full settings screen.
-  - If the user enters **[r]**: tell them to run `bash ${CCK_PLUGIN_DIR}/install/run.sh` to re-detect system values (requires interactive TTY). Then redisplay the settings screen.
+  - If the user enters **[1]**: tell them to run `bash ${CCK_PLUGIN_DIR}/install/run.sh` to re-detect system values (requires interactive TTY). Then redisplay the settings screen.
+  - If the user enters **2–9**: show the key name and current value, prompt for the new value, then update `~/.cck/localhost.conf` using: `sed -i.bak "s|^KEY=.*|KEY=\"newvalue\"|" ~/.cck/localhost.conf && rm ~/.cck/localhost.conf.bak`. After saving, redisplay the full settings screen.
 
 - **Re-run setup (2):** Tell the user to run this in their terminal: `bash ${CCK_PLUGIN_DIR}/install/run.sh` (it requires interactive TTY input so it can't run inside Claude Code directly).
 
